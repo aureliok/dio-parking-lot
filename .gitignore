@@ -30,3 +30,12 @@ bin/
 
 .vs/
 .vscode/
+
+/DjangoBackend/.django-be/
+
+*pyc
+__pycache__/
+.mypy_cache/
+staticfiles/
+media/
+*.env
