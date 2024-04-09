@@ -81,8 +81,8 @@ namespace ASPNETCoreBackend.Controllers
         {
             try
             {
-                _parkingLotManager.EndParkingLotActivity(parkingLotActivityModel);
-                return Ok();
+                ParkingLotActivityViewModel viewActivity = _parkingLotManager.EndParkingLotActivity(parkingLotActivityModel);
+                return Ok(viewActivity);
             }
             catch (Exception ex)
             {
@@ -197,5 +197,49 @@ namespace ASPNETCoreBackend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("vehicles-client")]
+        public IActionResult GetListOfVehiclesOfClient([FromQuery] string firstName, string lastName)
+        {
+            try
+            {
+                List<VehicleViewModel> vehicles = _parkingLotManager.GetVehiclesOfClient(firstName, lastName);
+                return Ok(vehicles);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("activities-parking-lot")]
+        public IActionResult GetListOfActivitiesOfParkingLot([FromQuery] string parkingLotName)
+        {
+            try
+            {
+                List<ParkingLotActivity> activities = _parkingLotManager.GetParkingLotActivities(parkingLotName);
+                List<ParkingLotActivityViewModel> viewActivities = new List<ParkingLotActivityViewModel>();
+
+                if (activities == null)
+                    return NoContent();
+                
+                
+                foreach (ParkingLotActivity activity in activities)
+                {
+                    ParkingLotActivityViewModel viewActivity = _parkingLotManager.GetParkingLotActivityViewModel(activity);
+
+                    viewActivities.Add(viewActivity);
+                }
+                
+                return Ok(viewActivities);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        
     }
 }

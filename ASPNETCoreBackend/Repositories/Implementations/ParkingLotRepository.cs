@@ -29,6 +29,7 @@ namespace ASPNETCoreBackend.Repositories.Implementations
                 _context.ParkingLots.Remove(checkParkingLot);
                 _context.SaveChanges();
             }
+            
         }
 
         public ParkingLot GetParkingLot(int parkingLotId)
@@ -43,13 +44,13 @@ namespace ASPNETCoreBackend.Repositories.Implementations
 
         public void UpdateParkingLot(ParkingLot parkingLot)
         {
-            ParkingLot checkParkingLot = _context.ParkingLots.FirstOrDefault(pl => pl.Equals(parkingLot));
+            //ParkingLot checkParkingLot = _context.ParkingLots.FirstOrDefault(pl => pl.Equals(parkingLot));
 
-            if (checkParkingLot != null)
-            {
-                _context.ParkingLots.Update(parkingLot);
-                _context.SaveChanges();
-            }
+            //if (checkParkingLot != null)
+            //{
+            _context.ParkingLots.Update(parkingLot);
+            _context.SaveChanges();
+            
         }
 
         public List<Vehicle> GetVehiclesByParkingLotId(int parkingLotId)

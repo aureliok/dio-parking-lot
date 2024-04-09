@@ -1,4 +1,5 @@
 ﻿using ASPNETCoreBackend.Entities;
+using ASPNETCoreBackend.Models;
 using ASPNETCoreBackend.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,23 +35,47 @@ namespace ASPNETCoreBackend.Repositories.Implementations
         }
 
 
-        public List<Vehicle> GetVehiclesByClient(int clientId)
+        public List<VehicleViewModel> GetVehiclesByClient(int clientId)
         {
-            List<Vehicle> vehicles = _context.Vehicles.Where(v => v.ClientId == clientId).ToList();
+            //List<Vehicle> vehicles = _context.Vehicles.Where(v => v.ClientId == clientId).ToList();
+            List<VehicleViewModel> vehicles = _context.Clients
+                                        .Where(c => c.ClientId == clientId)
+                                        .SelectMany(c => c.Vehicles)
+                                        .Select(v => new VehicleViewModel
+                                        {
+                                            FullName = $"{v.Client.FirstName} {v.Client.LastName}",
+                                            PlateNumber = v.PlateNumber,
+                                            Brand = v.Brand,
+                                            Model = v.Model,
+                                            Color = v.Color,
+                                            Year = v.Year
+                                        })
+                                        .ToList();
 
             return vehicles;
+        }
+
+        public void UpdateVehicle(Vehicle vehicle)
+        {
+            //Vehicle checkVehicle = _context.Vehicles.FirstOrDefault(v => v.Equals(vehicle));
+
+            //if (checkVehicle != null)
+            //{
+            _context.Vehicles.Update(vehicle);
+            _context.SaveChanges();
+            
         }
 
 
         public void RemoveVehicle(Vehicle vehicle)
         {
-            Vehicle checkVehicle = _context.Vehicles.FirstOrDefault(v => v.Equals(vehicle));
+            //Vehicle checkVehicle = _context.Vehicles.FirstOrDefault(v => v.Equals(vehicle));
 
-            if (checkVehicle != null)
-            {
-                _context.Vehicles.Remove(vehicle);
-                _context.SaveChanges();
-            }
+            //if (checkVehicle != null)
+            //{
+            _context.Vehicles.Remove(vehicle);
+            _context.SaveChanges();
+            
         }
     }
 }

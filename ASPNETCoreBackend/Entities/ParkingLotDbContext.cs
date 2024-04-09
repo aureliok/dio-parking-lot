@@ -19,11 +19,13 @@ namespace ASPNETCoreBackend.Entities
 
             modelBuilder.Entity<Client>()
                 .Property(c => c.RegistrationDate)
-                .HasDefaultValue(DateTime.UtcNow);
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<ParkingLotActivity>()
                 .Property(c => c.StartDate)
-                .HasDefaultValue(DateTime.UtcNow);
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<ParkingLot>()
                 .HasIndex(p => p.Name)
@@ -32,7 +34,6 @@ namespace ASPNETCoreBackend.Entities
             modelBuilder.Entity<Vehicle>()
                 .HasIndex(v => v.PlateNumber)
                 .IsUnique();
-
         }
 
         public DbSet<ParkingLot> ParkingLots { get; set; }

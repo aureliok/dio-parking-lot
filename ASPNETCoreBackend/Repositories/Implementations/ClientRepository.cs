@@ -34,13 +34,13 @@ namespace ASPNETCoreBackend.Repositories.Implementations
 
         public void RemoveClient(Client client)
         {
-            Client checkClient = _context.Clients.First(c => c.Equals(client));
+            //Client checkClient = _context.Clients.First(c => c.Equals(client));
 
-            if (checkClient != null)
-            {
-                _context.Clients.Remove(client);
-                _context.SaveChanges();
-            }
+            //if (checkClient != null)
+            //{
+            _context.Clients.Remove(client);
+            _context.SaveChanges();
+            
         }
 
         public void UpdateClient(Client client)

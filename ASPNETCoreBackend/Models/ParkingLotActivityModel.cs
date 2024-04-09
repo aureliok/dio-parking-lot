@@ -7,5 +7,7 @@
         public string ClientFirstName { get; set; }
         public string ClientLastName { get; set; }
         public string VehiclePlateNumber { get; set; }
+        public DateTime? StartDate { get; set; } = null;
+        public DateTime? EndDate { get; set; } = null;
     }
 }
