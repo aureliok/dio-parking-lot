@@ -9,19 +9,24 @@ function GetVehicleFormFields(): JSX.Element {
     event.preventDefault();
 
     try {
-      const parkingLotNameElement = (event.target as HTMLFormElement)
+      const clientFirstNameElement = (event.target as HTMLFormElement)
                                       .elements
-                                      .namedItem("form-parking-lot-name") as HTMLInputElement | null;
+                                      .namedItem("form-client-firstname") as HTMLInputElement | null;
+
+      const clientLastNameElement = (event.target as HTMLFormElement)
+                                      .elements
+                                      .namedItem("form-client-lastname") as HTMLInputElement | null;
       
-      if (!parkingLotNameElement) {
-        console.error("Can't fetch parking lot name");
+      if (!clientFirstNameElement || !clientLastNameElement) {
+        console.error("Can't fetch client name");
         return;
       }
 
-      const parkingLotName = parkingLotNameElement.value;
+      const clientFirstName = clientFirstNameElement.value;
+      const clientLasttName = clientLastNameElement.value;
 
       const response = 
-        await fetch(`https://localhost:7131/vehicles-parkinglot?parkingLotName=${encodeURIComponent(parkingLotName)}`, {
+        await fetch(`https://localhost:7131/vehicles-client?firstName=${encodeURIComponent(clientFirstName)}&lastName=${(encodeURIComponent(clientLasttName))}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json"
@@ -29,7 +34,7 @@ function GetVehicleFormFields(): JSX.Element {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to add parking lot");
+        throw new Error("Failed to fetch client's vehicles");
       } else {
         const data = await response.json();
         setVehicles(data);
@@ -47,20 +52,22 @@ function GetVehicleFormFields(): JSX.Element {
   return (
     <>
       <form method="GET" onSubmit={handleSubmit}>
-        <label htmlFor="form-parking-lot-name">Enter Parking Lot Name to fetch vehicles parked:</label>
-        <input type="text" className="form-control col long-field" id="form-parking-lot-name" />
+        <label htmlFor="form-client-firstname">Enter client's first name to fetch vehicle(s):</label>
+        <input type="text" className="form-control col long-field" id="form-client-firstname" />
+        <label htmlFor="form-client-lastname">Enter client's last name to fetch vehicle(s):</label>
+        <input type="text" className="form-control col long-field" id="form-client-lastname" />
         <button type="submit" className="col-4 btn btn-primary">Submit</button>
       </form>
 
       {submissionSuccess && (
           <div className="alert alert-success" role="alert">
-            Parking Lot vehicles returned successfully!
+            Client's vehicles returned successfully!
           </div>
         )}
   
         {submissionFailure && (
           <div className="alert alert-danger" role="alert">
-            Failed to return parking lot vehicles. Please check the name and try again.
+            Failed to return client's vehicles. Please check the name and try again.
           </div>
         )}
 
@@ -71,25 +78,23 @@ function GetVehicleFormFields(): JSX.Element {
           <table className="table table-striped">
             <thead>
               <tr>
-                <th>Vehicle ID</th>
+                <th>Client Name</th>
                 <th>Plate Number</th>
                 <th>Brand</th>
                 <th>Model</th>
                 <th>Color</th>
                 <th>Year</th>
-                <th>Client ID</th>
               </tr>
             </thead>
             <tbody>
               {vehicles.map((vehicle, index) => (
                 <tr key={index}>
-                  <td>{vehicle.vehicleId}</td>
+                  <td>{vehicle.fullName}</td>
                   <td>{vehicle.plateNumber}</td>
                   <td>{vehicle.brand}</td>
                   <td>{vehicle.model}</td>
                   <td>{vehicle.color}</td>
                   <td>{vehicle.year}</td>
-                  <td>{vehicle.clientId}</td>
                 </tr>
               ))}
             </tbody>
@@ -100,7 +105,7 @@ function GetVehicleFormFields(): JSX.Element {
 
       {vehicles.length === 0 && (
         <div>
-        Oops! No cars are parked on this lot at the moment.
+        Oops! Client's hasn't registered any vehicles yet.
       </div>
       )}
     </>

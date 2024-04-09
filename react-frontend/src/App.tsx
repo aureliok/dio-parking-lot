@@ -4,9 +4,9 @@ import './App.css';
 import Title from './Title';
 import Menu from './Menu';
 import ParkingLotsPage from './ParkingLotsPageComponents/ParkingLotsPage';
-import ClientsPage from './ClientsPage';
-import VehiclesPage from './VehiclesPage';
-import ActivitiesPage from './ActivitiesPage';
+import ClientsPage from './ClientsPageComponents/ClientsPage';
+import VehiclesPage from './VehiclePageComponents/VehiclesPage';
+import ActivitiesPage from './ActivitiesPageComponents/ActivitiesPage';
 import { MenuProps } from './MenuProps';
 import { Option } from './Option';
 

@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ASPNETCoreBackend.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,7 +26,7 @@ namespace ASPNETCoreBackend.Migrations
                     LastName = table.Column<string>(type: "text", nullable: false),
                     PhoneNumber = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: true),
-                    RegistrationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTime(2024, 4, 7, 23, 44, 39, 435, DateTimeKind.Utc).AddTicks(9428))
+                    RegistrationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -93,7 +93,7 @@ namespace ASPNETCoreBackend.Migrations
                     ParkingLotId = table.Column<int>(type: "integer", nullable: false),
                     ClientId = table.Column<int>(type: "integer", nullable: false),
                     VehicleId = table.Column<int>(type: "integer", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTime(2024, 4, 7, 23, 44, 39, 435, DateTimeKind.Utc).AddTicks(9743)),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ParkingValue = table.Column<decimal>(type: "numeric", nullable: false)
                 },
@@ -140,6 +140,13 @@ namespace ASPNETCoreBackend.Migrations
                 schema: "parking_lot_system",
                 table: "parking_lot_activities",
                 column: "VehicleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_parking_lots_Name",
+                schema: "parking_lot_system",
+                table: "parking_lots",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_vehicles_ClientId",

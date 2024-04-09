@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ASPNETCoreBackend.Migrations
 {
     [DbContext(typeof(ParkingLotDbContext))]
-    [Migration("20240407234439_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240409154625_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,7 +52,7 @@ namespace ASPNETCoreBackend.Migrations
                     b.Property<DateTime>("RegistrationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2024, 4, 7, 23, 44, 39, 435, DateTimeKind.Utc).AddTicks(9428));
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("ClientId");
 
@@ -83,6 +83,9 @@ namespace ASPNETCoreBackend.Migrations
 
                     b.HasKey("ParkingLotId");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("parking_lots", "parking_lot_system");
                 });
 
@@ -109,7 +112,7 @@ namespace ASPNETCoreBackend.Migrations
                     b.Property<DateTime>("StartDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2024, 4, 7, 23, 44, 39, 435, DateTimeKind.Utc).AddTicks(9743));
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<int>("VehicleId")
                         .HasColumnType("integer");

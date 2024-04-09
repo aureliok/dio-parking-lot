@@ -46,7 +46,7 @@ function AddFormFields(): JSX.Element {
           <input 
             type="text" 
             value={formData.name} 
-            className="form-control col" 
+            className="form-control col long-field" 
             id="form-parking-lot-name" 
             required 
             onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
@@ -54,7 +54,7 @@ function AddFormFields(): JSX.Element {
           <input 
             type="text" 
             value={formData.address} 
-            className="form-control col" 
+            className="form-control col long-field" 
             id="form-parking-lot-address" 
             required 
             onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
@@ -63,6 +63,7 @@ function AddFormFields(): JSX.Element {
             type="number" 
             value={formData.priceFirstHour} 
             step="any" 
+            className="form-control col short-field"
             id="form-parking-lot-price-first-hour" 
             required 
             onChange={(e) => setFormData({ ...formData, priceFirstHour: Number(e.target.value) })} />
@@ -71,10 +72,11 @@ function AddFormFields(): JSX.Element {
             type="number" 
             value={formData.pricePerAdditionalHour} 
             step="any" 
+            className="form-control col short-field"
             id="form-parking-lot-price-add-hour" 
             required 
             onChange={(e) => setFormData({ ...formData, pricePerAdditionalHour: Number(e.target.value) })} />
-          <button type="submit" className="col-12">Submit</button>
+          <button type="submit" className="col-4 btn btn-primary">Submit</button>
         </form>
   
         {submissionSuccess && (

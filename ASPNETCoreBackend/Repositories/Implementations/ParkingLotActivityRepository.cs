@@ -1,6 +1,7 @@
 ﻿using ASPNETCoreBackend.Entities;
 using ASPNETCoreBackend.Models;
 using ASPNETCoreBackend.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
 
 namespace ASPNETCoreBackend.Repositories.Implementations
@@ -54,8 +55,9 @@ namespace ASPNETCoreBackend.Repositories.Implementations
 
             return _context.ParkingLotActivities
                         .Where(a => (a.ParkingLotId == parkingLot.ParkingLotId
-                                        && a.EndDate == null 
+                                        && a.EndDate == null
                                         && a.VehicleId == vehicle.VehicleId))
+                        .Include(a => a.Client)
                         .OrderByDescending(a => a.StartDate)
                         .FirstOrDefault();
         }
@@ -66,6 +68,10 @@ namespace ASPNETCoreBackend.Repositories.Implementations
             List<ParkingLotActivity> activities = _context
                                                     .ParkingLotActivities
                                                     .Where(a => a.ParkingLotId == parkingLotId)
+                                                    .Include(a => a.Vehicle)
+                                                    .Include(a => a.ParkingLot)
+                                                    .Include(a => a.Client)
+                                                    .OrderByDescending(a => a.StartDate)
                                                     .ToList();
 
             return activities;
@@ -86,15 +92,15 @@ namespace ASPNETCoreBackend.Repositories.Implementations
 
         public void UpdateParkingLotActivity(ParkingLotActivity activity)
         {
-            ParkingLotActivity checkActivity = _context
-                                            .ParkingLotActivities
-                                            .FirstOrDefault(a => a.Equals(activity));
+            //ParkingLotActivity checkActivity = _context
+            //                                .ParkingLotActivities
+            //                                .FirstOrDefault(a => a.Equals(activity));
 
-            if (checkActivity != null)
-            {
-                _context.ParkingLotActivities.Update(checkActivity);
-                _context.SaveChanges();
-            }
+            //if (checkActivity != null)
+            //{
+            _context.ParkingLotActivities.Update(activity);
+            _context.SaveChanges();
+            
         }
     }
 }

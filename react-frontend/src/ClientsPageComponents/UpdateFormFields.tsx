@@ -1,15 +1,16 @@
 import { useState } from "react";
-import { ParkingLotFormData } from "./ParkingLotFormData";
+import { ClientFormData } from "./ClientFormData";
 
-const initialParkingLotFormData: ParkingLotFormData = {
-    name: "",
-    address: "",
-    pricePerAdditionalHour: 0,
-    priceFirstHour: 0
-  };
+const initialClientFormData: ClientFormData = {
+  firstName: "",
+  lastName: "",
+  phone: "",
+  email: ""
+};
+  
 
 function UpdateFormFields(): JSX.Element {
-    const [formData, setFormData] = useState(initialParkingLotFormData);
+    const [formData, setFormData] = useState(initialClientFormData);
     const [submissionSuccess, setSubmissionSuccess] = useState(false);
     const [submissionFailure, setSubmissionFailure] = useState(false);
 
@@ -17,7 +18,7 @@ function UpdateFormFields(): JSX.Element {
         event.preventDefault();
     
         try {
-          const response = await fetch("https://localhost:7131/update-parking-lot", {
+          const response = await fetch("https://localhost:7131/update-client", {
             method: "PUT",
             headers: {
               "Content-Type": "application/json"
@@ -26,7 +27,7 @@ function UpdateFormFields(): JSX.Element {
           });
     
           if (!response.ok) {
-            throw new Error("Failed to add parking lot");
+            throw new Error("Failed to add client");
           } else {
             setSubmissionSuccess(true);
             setSubmissionFailure(false);
@@ -41,48 +42,46 @@ function UpdateFormFields(): JSX.Element {
     return (
       <>
         <form method="PUT" onSubmit={handleSubmit}>
-            <label htmlFor="form-parking-lot-name">Enter Parking Lot Name to be updated:</label>
+            <label htmlFor="form-client-firstname">Enter client's first name to be updated:</label>
             <input 
                 type="text" 
                 className="form-control col long-field" 
-                id="form-parking-lot-name" 
+                id="form-client-firstname" 
                 required
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
-            <p>
-            Fill forms that you want to update, otherwise leave it blank:
-            </p>
-            <label htmlFor="form-parking-lot-address">Enter new Parking Lot Address:</label>
+                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} />
+            <label htmlFor="form-client-lastname">Enter client's last name to be updated:</label>
             <input 
                 type="text" 
                 className="form-control col long-field" 
                 id="form-parking-lot-address" 
-                onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
-            <label htmlFor="form-parking-lot-price-first-hour">Enter new price of the first hour:</label>
+                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} />
+            <p>
+            Fill forms that you want to update, otherwise leave it blank:
+            </p>
+            <label htmlFor="form-client-phone">Enter client's new phone number:</label>
             <input 
-                type="number" 
-                step="any" 
+                type="text" 
+                id="form-client-phone" 
                 className="form-control col short-field"
-                id="form-parking-lot-price-first-hour" 
-                onChange={(e) => setFormData({ ...formData, priceFirstHour: Number(e.target.value) })} />
-            <label htmlFor="form-parking-lot-price-add-hour">Enter new price of the each additional hour:</label>
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
+            <label htmlFor="form-client-email">Enter client's new email:</label>
             <input 
-                type="number" 
-                step="any" 
+                type="text"  
+                id="form-client-email" 
                 className="form-control col short-field"
-                id="form-parking-lot-price-add-hour" 
-                onChange={(e) => setFormData({ ...formData, pricePerAdditionalHour: Number(e.target.value) })} />
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
             <button type="submit" className="col-4 btn btn-primary">Submit</button>
         </form>
 
         {submissionSuccess && (
           <div className="alert alert-success" role="alert">
-            Parking Lot updated successfully!
+            Client's data has been updated successfully!
           </div>
         )}
   
         {submissionFailure && (
           <div className="alert alert-danger" role="alert">
-            Failed to update parking lot. Please try again.
+            Failed to update client's data. Please try again.
           </div>
         )}
       </>

@@ -43,7 +43,7 @@
 }
 
 .selected {
-  background-color: mediumaquamarine;
+  background-color: #17a2b8;
   color: black;
   border-color: black; 
   font-weight: bold;
@@ -54,4 +54,31 @@
   height: 100vh;
   width: 100vw;
   background-color: lightcyan;
+}
+
+.sub-selected {
+  background-color: #007bff;
+  font-weight: bold;
+  color: white;
+}
+
+.table-responsive {
+  max-height: 70%;
+  overflow-y: auto;
+}
+
+.long-field {
+  width: 70%;
+  margin-left: 15%;
+  margin-bottom: 1%;
+  border: 1px solid grey;
+  text-align: center;
+}
+
+.short-field {
+  width: 30%;
+  margin-left: 35%;
+  margin-bottom: 1%;
+  border: 1px solid grey;
+  text-align: center;
 }

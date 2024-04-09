@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { ActitivyFormData, ActivityView } from "./ActivityFormData";
 
-function GetVehicleFormFields(): JSX.Element {
+
+function GetActivitiesFormFields(): JSX.Element {
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
   const [submissionFailure, setSubmissionFailure] = useState(false);
-  const [vehicles, setVehicles] = useState<any[]>([]);
+  const [activities, setActivities] = useState<ActivityView[]>([]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -11,17 +13,18 @@ function GetVehicleFormFields(): JSX.Element {
     try {
       const parkingLotNameElement = (event.target as HTMLFormElement)
                                       .elements
-                                      .namedItem("form-parking-lot-name") as HTMLInputElement | null;
+                                      .namedItem("form-activity-parkinglot") as HTMLInputElement | null;
+
       
       if (!parkingLotNameElement) {
-        console.error("Can't fetch parking lot name");
+        console.error("Can't fetch client name");
         return;
       }
 
       const parkingLotName = parkingLotNameElement.value;
 
       const response = 
-        await fetch(`https://localhost:7131/vehicles-parkinglot?parkingLotName=${encodeURIComponent(parkingLotName)}`, {
+        await fetch(`https://localhost:7131/activities-parking-lot?parkingLotName=${(encodeURIComponent(parkingLotName))}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json"
@@ -29,10 +32,10 @@ function GetVehicleFormFields(): JSX.Element {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to add parking lot");
+        throw new Error("Failed to fetch client's vehicles");
       } else {
         const data = await response.json();
-        setVehicles(data);
+        setActivities(data);
         setSubmissionSuccess(true);
         setSubmissionFailure(false);
       }
@@ -47,49 +50,49 @@ function GetVehicleFormFields(): JSX.Element {
   return (
     <>
       <form method="GET" onSubmit={handleSubmit}>
-        <label htmlFor="form-parking-lot-name">Enter Parking Lot Name to fetch vehicles parked:</label>
-        <input type="text" className="form-control col long-field" id="form-parking-lot-name" />
+        <label htmlFor="form-activity-parkinglot">Enter parking lot name to retrieve current activities:</label>
+        <input type="text" className="form-control col short-field" id="form-activity-parkinglot" />
         <button type="submit" className="col-4 btn btn-primary">Submit</button>
       </form>
 
       {submissionSuccess && (
           <div className="alert alert-success" role="alert">
-            Parking Lot vehicles returned successfully!
+            Parking Lot activities returned successfully!
           </div>
         )}
   
         {submissionFailure && (
           <div className="alert alert-danger" role="alert">
-            Failed to return parking lot vehicles. Please check the name and try again.
+            Failed to return activities. Please check the name and try again.
           </div>
         )}
 
-      {vehicles.length > 0 && (
+      {activities.length > 0 && (
         <div>
-        <h3>Parking Lot Vehicles</h3>
+        <h3>{activities[0].parkingLotName}</h3>
         <div className="table-responsive">
           <table className="table table-striped">
             <thead>
               <tr>
-                <th>Vehicle ID</th>
+                <th>#</th>
+                <th>Client</th>
                 <th>Plate Number</th>
-                <th>Brand</th>
-                <th>Model</th>
-                <th>Color</th>
-                <th>Year</th>
-                <th>Client ID</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Price First Hour</th>
+                <th>Price Add. Hour</th>
               </tr>
             </thead>
             <tbody>
-              {vehicles.map((vehicle, index) => (
+              {activities.map((activity, index) => (
                 <tr key={index}>
-                  <td>{vehicle.vehicleId}</td>
-                  <td>{vehicle.plateNumber}</td>
-                  <td>{vehicle.brand}</td>
-                  <td>{vehicle.model}</td>
-                  <td>{vehicle.color}</td>
-                  <td>{vehicle.year}</td>
-                  <td>{vehicle.clientId}</td>
+                  <td>{activity.parkingLotActivityId}</td>
+                  <td>{activity.clientFirstName} {activity.clientLastName}</td>
+                  <td>{activity.plateNumber}</td>
+                  <td>{new Date(activity.startDate).toLocaleString()}</td>
+                  <td>{activity.endDate ? new Date(activity.endDate).toLocaleString() : ''}</td>
+                  <td>{activity.priceFirstHour}</td>
+                  <td>{activity.pricePerAdditionalHour}</td>
                 </tr>
               ))}
             </tbody>
@@ -97,14 +100,8 @@ function GetVehicleFormFields(): JSX.Element {
         </div>
       </div>
       )}
-
-      {vehicles.length === 0 && (
-        <div>
-        Oops! No cars are parked on this lot at the moment.
-      </div>
-      )}
     </>
   )
 }
 
-export default GetVehicleFormFields;
+export default GetActivitiesFormFields;

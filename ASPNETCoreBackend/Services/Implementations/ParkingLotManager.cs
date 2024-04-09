@@ -2,6 +2,7 @@
 using ASPNETCoreBackend.Models;
 using ASPNETCoreBackend.Repositories.Interfaces;
 using ASPNETCoreBackend.Services.Interfaces;
+using System.Diagnostics;
 
 
 namespace ASPNETCoreBackend.Services.Implementations
@@ -66,7 +67,7 @@ namespace ASPNETCoreBackend.Services.Implementations
                 Brand = vehicleModel.Brand,
                 Model = vehicleModel.Model,
                 Color = vehicleModel.Color,
-                Year = vehicleModel.Year.HasValue ? vehicleModel.Year : null,
+                Year = vehicleModel.Year != 0 ? vehicleModel.Year : null,
                 ClientId = client.ClientId,
             };
 
@@ -109,8 +110,8 @@ namespace ASPNETCoreBackend.Services.Implementations
 
             if (client != null)
             {
-                client.PhoneNumber = clientModel.Phone != null ? clientModel.Phone : client.PhoneNumber;
-                client.Email = clientModel.Email != null ? clientModel.Email : client.Email;
+                client.PhoneNumber = !string.IsNullOrEmpty(clientModel.Phone)? clientModel.Phone : client.PhoneNumber;
+                client.Email = !string.IsNullOrEmpty(clientModel.Email) ? clientModel.Email : client.Email;
 
                 _clientRepository.UpdateClient(client);
             }
@@ -127,7 +128,7 @@ namespace ASPNETCoreBackend.Services.Implementations
 
             if (parkingLot != null)
             {
-                parkingLot.Address = parkingLotModel.Address != null ? parkingLotModel.Address : parkingLot.Address;
+                parkingLot.Address = !string.IsNullOrEmpty(parkingLotModel.Address) ? parkingLotModel.Address : parkingLot.Address;
                 parkingLot.PricePerAdditionalHour = parkingLotModel.PricePerAdditionalHour != 0 ? 
                                                             parkingLotModel.PricePerAdditionalHour :
                                                             parkingLot.PricePerAdditionalHour;
@@ -145,7 +146,7 @@ namespace ASPNETCoreBackend.Services.Implementations
             Vehicle vehicle = _vehicleRepository.GetVehicle(vehicleModel.PlateNumber);
             if (vehicle != null)
             {
-                if (vehicleModel.ClientFirstName != null)
+                if (!string.IsNullOrEmpty(vehicleModel.ClientFirstName))
                 {
                     Client newOwner = _clientRepository.GetByFullName(vehicleModel.ClientFirstName, vehicleModel.ClientLastName);
 
@@ -158,7 +159,9 @@ namespace ASPNETCoreBackend.Services.Implementations
                     vehicle.Client = newOwner;
                 }
 
-                vehicle.Color = vehicleModel.Color != null ? vehicleModel.Color : vehicle.Color; 
+                vehicle.Color = !string.IsNullOrEmpty(vehicleModel.Color) ? vehicleModel.Color : vehicle.Color;
+
+                _vehicleRepository.UpdateVehicle(vehicle);
             }
         }
 
@@ -177,6 +180,15 @@ namespace ASPNETCoreBackend.Services.Implementations
             if (vehicle == null)
                 throw new KeyNotFoundException("Vehicle not found");
 
+
+            ParkingLotActivity parkingLotActivity = _parkingLotActivityRepository
+                                                        .GetFromPlateNumber(parkingLotActivityModel.VehiclePlateNumber,
+                                                                            parkingLotActivityModel.ParkingLotName);
+
+            if (parkingLotActivity != null)
+                throw new Exception("Vehicle is already parked");
+
+
             ParkingLotActivity activity = new ParkingLotActivity
             {
                 ParkingLotId = parkingLot.ParkingLotId,
@@ -188,6 +200,11 @@ namespace ASPNETCoreBackend.Services.Implementations
                 ParkingValue = -1,
             };
 
+            if (parkingLotActivityModel.StartDate != null)
+            {
+                activity.StartDate = (DateTime)parkingLotActivityModel.StartDate;
+            }
+
             _parkingLotActivityRepository.AddParkingLotActivity(activity);
         }
 
@@ -197,7 +214,27 @@ namespace ASPNETCoreBackend.Services.Implementations
             throw new NotImplementedException();
         }
 
-        public void EndParkingLotActivity(ParkingLotActivityModel parkingLotActivityModel)
+        public ParkingLotActivityViewModel GetParkingLotActivityViewModel(ParkingLotActivity activity)
+        {
+            ParkingLotActivityViewModel viewActivity = new ParkingLotActivityViewModel
+            {
+                ParkingLotActivityId = activity.ParkingLotActivityId,
+                ParkingLotId = activity.ParkingLotId,
+                ParkingLotName = activity.ParkingLot.Name,
+                PricePerAdditionalHour = activity.ParkingLot.PricePerAdditionalHour,
+                PriceFirstHour = activity.ParkingLot.PriceFirstHour,
+                PlateNumber = activity.Vehicle.PlateNumber,
+                ClientFirstName = activity.Client.FirstName,
+                ClientLastName = activity.Client.LastName,
+                StartDate = activity.StartDate,
+                EndDate = activity.EndDate,
+                ParkingValue = activity.ParkingValue,
+            };
+
+            return viewActivity;
+        }
+
+        public ParkingLotActivityViewModel EndParkingLotActivity(ParkingLotActivityModel parkingLotActivityModel)
         {
             ParkingLotActivity activity;
             ParkingLot parkingLot = _parkingLotRepository.GetParkingLot(parkingLotActivityModel.ParkingLotName);
@@ -221,8 +258,15 @@ namespace ASPNETCoreBackend.Services.Implementations
                                 .GetById(parkingLotActivityModel.ParkingLotActivityId);
             }
 
+            if (parkingLotActivityModel.EndDate == null)
+            {
+                activity.EndDate = DateTime.UtcNow;
+            }
+            else
+            {
+                activity.EndDate = parkingLotActivityModel.EndDate;
+            }
 
-            activity.EndDate = DateTime.UtcNow;
             TimeSpan duration = (DateTime)activity.EndDate - activity.StartDate;
 
             double additionalHours = duration.TotalHours - 1 > 0 ? duration.TotalHours - 1 : 0;
@@ -230,6 +274,8 @@ namespace ASPNETCoreBackend.Services.Implementations
             activity.ParkingValue = parkingLot.PriceFirstHour + parkingLot.PricePerAdditionalHour * (decimal)additionalHours;
             
             _parkingLotActivityRepository.UpdateParkingLotActivity(activity);
+
+            return GetParkingLotActivityViewModel(activity);
         }
 
         public List<Vehicle> GetVehiclesAtParkingLot(string parkingLotName)
@@ -239,6 +285,24 @@ namespace ASPNETCoreBackend.Services.Implementations
                 throw new KeyNotFoundException("Parking Lot not found");
 
             return _parkingLotRepository.GetVehiclesByParkingLotId(parkingLot.ParkingLotId);
+        }
+
+        public List<VehicleViewModel> GetVehiclesOfClient(string firstName, string lastName)
+        {
+            Client client = _clientRepository.GetByFullName(firstName, lastName);
+            if (client == null) 
+                throw new KeyNotFoundException("Client not found");
+
+            return _vehicleRepository.GetVehiclesByClient(client.ClientId);
+        }
+
+        public List<ParkingLotActivity> GetParkingLotActivities(string parkingLotName)
+        {
+            ParkingLot parkingLot = _parkingLotRepository.GetParkingLot(parkingLotName);
+            if (parkingLot == null)
+                throw new KeyNotFoundException("Parking lot not found");
+
+            return _parkingLotActivityRepository.GetByParkingLotId(parkingLot.ParkingLotId);
         }
     }
 }

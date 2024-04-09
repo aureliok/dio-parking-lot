@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { ParkingLotFormData } from "./ParkingLotFormData";
+import { ClientFormData } from "./ClientFormData";
 
-const initialParkingLotFormData: ParkingLotFormData = {
-  name: "",
-  address: "",
-  pricePerAdditionalHour: 0,
-  priceFirstHour: 0
+const initialClientFormData: ClientFormData = {
+  firstName: "",
+  lastName: "",
+  phone: "",
+  email: ""
 };
   
 
 function RemoveFormFields(): JSX.Element {
-  const [formData, setFormData] = useState(initialParkingLotFormData);
+  const [formData, setFormData] = useState(initialClientFormData);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
   const [submissionFailure, setSubmissionFailure] = useState(false);
 
@@ -18,7 +18,7 @@ function RemoveFormFields(): JSX.Element {
     event.preventDefault();
 
     try {
-      const response = await fetch("https://localhost:7131/delete-parking-lot", {
+      const response = await fetch("https://localhost:7131/delete-client", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json"
@@ -27,7 +27,7 @@ function RemoveFormFields(): JSX.Element {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to remove parking lot");
+        throw new Error("Failed to remove client");
       } else {
         setSubmissionSuccess(true);
         setSubmissionFailure(false);
@@ -43,25 +43,32 @@ function RemoveFormFields(): JSX.Element {
   return (
     <>
       <form method="DELETE" onSubmit={handleSubmit}>
-        <label htmlFor="form-parking-lot-name">Enter Parking Lot Name to be removed:</label>
+        <label htmlFor="form-client-firstname">Enter client's first name to be removed:</label>
         <input 
           type="text" 
           className="form-control col long-field" 
-          id="form-parking-lot-name" 
+          id="form-client-firstname" 
           required
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
+          onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} />
+          <label htmlFor="form-client-lastname">Enter client's last name to be removed:</label>
+        <input 
+          type="text" 
+          className="form-control col long-field" 
+          id="form-client-lastname" 
+          required
+          onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} />
         <button type="submit" className="col-4 btn btn-primary">Submit</button>
       </form>
 
       {submissionSuccess && (
           <div className="alert alert-success" role="alert">
-            Parking Lot removed successfully!
+            Client removed successfully!
           </div>
         )}
   
         {submissionFailure && (
           <div className="alert alert-danger" role="alert">
-            Failed to remove parking lot. Please try again.
+            Failed to remove client. Please try again.
           </div>
         )}
     </>

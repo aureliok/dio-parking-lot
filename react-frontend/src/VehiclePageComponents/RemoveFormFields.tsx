@@ -1,16 +1,19 @@
 import { useState } from "react";
-import { ParkingLotFormData } from "./ParkingLotFormData";
+import { VehicleFormData } from "./VehicleFormData";
 
-const initialParkingLotFormData: ParkingLotFormData = {
-  name: "",
-  address: "",
-  pricePerAdditionalHour: 0,
-  priceFirstHour: 0
+const initialVehicleFormData: VehicleFormData = {
+  plateNumber: "",
+  brand: "",
+  model: "",
+  color: "",
+  year: 0,
+  clientFirstName: "",
+  clientLastName: ""
 };
   
 
 function RemoveFormFields(): JSX.Element {
-  const [formData, setFormData] = useState(initialParkingLotFormData);
+  const [formData, setFormData] = useState(initialVehicleFormData);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
   const [submissionFailure, setSubmissionFailure] = useState(false);
 
@@ -18,7 +21,7 @@ function RemoveFormFields(): JSX.Element {
     event.preventDefault();
 
     try {
-      const response = await fetch("https://localhost:7131/delete-parking-lot", {
+      const response = await fetch("https://localhost:7131/delete-vehicle", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json"
@@ -27,7 +30,7 @@ function RemoveFormFields(): JSX.Element {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to remove parking lot");
+        throw new Error("Failed to remove vehicle");
       } else {
         setSubmissionSuccess(true);
         setSubmissionFailure(false);
@@ -43,25 +46,25 @@ function RemoveFormFields(): JSX.Element {
   return (
     <>
       <form method="DELETE" onSubmit={handleSubmit}>
-        <label htmlFor="form-parking-lot-name">Enter Parking Lot Name to be removed:</label>
+        <label htmlFor="form-vehicle-platenumber">Enter vehicle's plate number:</label>
         <input 
           type="text" 
-          className="form-control col long-field" 
-          id="form-parking-lot-name" 
+          className="form-control col short-field" 
+          id="form-vehicle-platenumber" 
           required
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
+          onChange={(e) => setFormData({ ...formData, plateNumber: e.target.value })} />
         <button type="submit" className="col-4 btn btn-primary">Submit</button>
       </form>
 
       {submissionSuccess && (
           <div className="alert alert-success" role="alert">
-            Parking Lot removed successfully!
+            Vehicle has been removed successfully!
           </div>
         )}
   
         {submissionFailure && (
           <div className="alert alert-danger" role="alert">
-            Failed to remove parking lot. Please try again.
+            Failed to remove vehicle. Please try again.
           </div>
         )}
     </>
