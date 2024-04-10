@@ -1,10 +1,9 @@
-from .base_vehicle_repository import BaseRepository
 from models import Vehicle
 from django.http import Http404
 from typing import List
 STATIC_ATTR: List[str] = ['vehicle_id', 'plate_number', 'brand', 'model', 'year']
 
-class VehicleRepository(BaseRepository):
+class VehicleRepository:
     def add(self, data: Vehicle) -> None:
         Vehicle.objects.create(**data)
 

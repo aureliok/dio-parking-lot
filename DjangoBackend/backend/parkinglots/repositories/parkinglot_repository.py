@@ -1,4 +1,3 @@
-from .base_parkinglot_repository import BaseRepository
 from models import ParkingLot
 from vehicles.models import Vehicle
 from activities.models import Activity
@@ -6,7 +5,7 @@ from typing import List
 from django.http import Http404
 STATIC_ATTR: List[str] = ['parking_lot_id', 'name']
 
-class ParkingLotRepository(BaseRepository):
+class ParkingLotRepository:
     def add(self, data: ParkingLot) -> None:
         ParkingLot.objects.create(**data)
 

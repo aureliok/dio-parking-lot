@@ -39,3 +39,4 @@ __pycache__/
 staticfiles/
 media/
 *.env
+db.sqlite3
