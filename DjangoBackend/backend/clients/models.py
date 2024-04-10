@@ -1,5 +1,5 @@
 from django.db import models
-from abc import ABC, abstractmethod
+
 
 class Client(models.Model):
     client_id = models.AutoField(primary_key=True)
@@ -16,23 +16,17 @@ class Client(models.Model):
         return f'{self.first_name} {self.last_name}'
     
 
-class ClientModel(ABC):
-    @property
-    @abstractmethod
-    def first_name(self):
-        pass
+class ClientModel():
+    def __init__(self, **kwargs):
+        self.first_name = kwargs.get('first_name')
+        self.last_name = kwargs.get('last_name')
+        self.phone = kwargs.get('phone')
+        self.email = kwargs.get('email')
 
-    @property
-    @abstractmethod
-    def last_name(self):
-        pass
-
-    @property
-    @abstractmethod
-    def phone(self):
-        pass
-
-    @property
-    @abstractmethod
-    def email(self):
-        pass
+    def to_dict(self):
+        return {
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'phone': self.phone,
+            'email': self.email
+        }

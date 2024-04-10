@@ -8,9 +8,9 @@ class ClientService:
 
     def add_client(self, client_model: ClientModel) -> None:
         client: Client = Client(first_name=client_model.first_name,
-                        last_name=client_model.last_name,
-                        phone=client_model.phone,
-                        email=client_model.email)
+                                last_name=client_model.last_name,
+                                phone=client_model.phone,
+                                email=client_model.email)
         
         self.client_repo.add(client)
 

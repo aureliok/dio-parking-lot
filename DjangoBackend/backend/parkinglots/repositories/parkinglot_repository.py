@@ -1,4 +1,4 @@
-from models import ParkingLot
+from models import ParkingLot, ParkingLotModel
 from vehicles.models import Vehicle
 from activities.models import Activity
 from typing import List
@@ -16,9 +16,9 @@ class ParkingLotRepository:
         except ParkingLot.DoesNotExist:
             raise Http404(f'Parking Lot with id {parking_lot} does not exist')
         
-    def update(self, data: ParkingLot) -> None:
+    def update(self, id: int, data: ParkingLotModel) -> None:
         try:
-            parking_lot: ParkingLot = ParkingLot.object.get(pk=data.parking_lot_id)
+            parking_lot: ParkingLot = ParkingLot.object.get(pk=id)
 
             for attr, value in data.__dict__.items():
                 if attr not in STATIC_ATTR and value is not None:
@@ -26,7 +26,7 @@ class ParkingLotRepository:
 
             parking_lot.save()
         except ParkingLot.DoesNotExist:
-            raise Http404(f'Parking Lot with id {data.parking_lot_id} does not exist')
+            raise Http404(f'Parking Lot with id {id} does not exist')
         
     def get_by_id(self, id: int) -> ParkingLot:
         try:
@@ -46,4 +46,7 @@ class ParkingLotRepository:
                                                     .values_list('vehicle_id', flat=True)
 
         return Vehicle.objects.filter(vehicle_id__in=vehicles_ids)
+
+        
+
             

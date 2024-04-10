@@ -13,3 +13,19 @@ class ParkingLot(models.Model):
 
     def __str__(self) -> str:
         return f'{self.name}'
+    
+
+class ParkingLotModel:
+    def __init__(self, **kwargs):
+        self.name = kwargs.get('name')
+        self.address = kwargs.get('address')
+        self.price_first_hour = kwargs.get('price_first_hour')
+        self.price_additional_hour = kwargs.get('price_additional_hour')
+
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'address': self.address,
+            'price_first_hour': self.price_first_hour,
+            'price_additional_hour': self.price_additional_hour
+        }

@@ -14,9 +14,9 @@ class VehicleRepository:
         except Vehicle.DoesNotExist:
             raise Http404(f'Vehicle with id {data.vehicle_id} does not exist')
         
-    def update(self, data: Vehicle) -> None:
+    def update(self, id: int, data: Vehicle) -> None:
         try:
-            vehicle: Vehicle = Vehicle.objects.get(pk=data.vehicle_id)
+            vehicle: Vehicle = Vehicle.objects.get(pk=id)
             
             for attr, value in data.__dict__.items():
                 if attr not in STATIC_ATTR and value is not None:
@@ -24,7 +24,7 @@ class VehicleRepository:
 
             vehicle.save()
         except Vehicle.DoesNotExist:
-            raise Http404(f'Vehicle with id {data.vehicle_id} does not exist')
+            raise Http404(f'Vehicle with id {id} does not exist')
         
     def get_vehicle(self, plate_number: str) -> Vehicle:
         try:

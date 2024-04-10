@@ -6,7 +6,7 @@ from django.http import Http404
 from typing import List
 STATIC_ATTR: List[str] = ['activity_id', 'parking_lot', 'client', 'vehicle']
 
-class BaseRepository:
+class ActivityRepository:
     def add(self, data: Activity) -> None:
         Activity.objects.create(**data)
 
