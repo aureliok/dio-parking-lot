@@ -1,10 +1,9 @@
-from .base import BaseRepository
-from models import Client
+from models import Client, ClientModel
 from django.http import Http404
 from typing import List
 STATIC_ATTR: List[str] = ['client_id', 'first_name', 'last_name', 'registration_date']
 
-class ClientRepository(BaseRepository):
+class ClientRepository:
     def add(self, data: Client) -> None:
         Client.objects.create(**data)
     
@@ -16,9 +15,9 @@ class ClientRepository(BaseRepository):
         except Client.DoesNotExist:
             raise Http404(f'Client with id {data.client_id} does not exist')
         
-    def update(self, data: Client) -> None:
+    def update(self, id: int, data: ClientModel) -> None:
         try:
-            client: Client = Client.objects.get(pk=data.client_id)
+            client: Client = Client.objects.get(pk=id)
             
             for attr, value in data.__dict__.items():
                 if attr not in STATIC_ATTR and value is not None:
@@ -26,7 +25,7 @@ class ClientRepository(BaseRepository):
 
             client.save()
         except Client.DoesNotExist:
-            raise Http404(f'Client with id {data.client_id} does not exist')
+            raise Http404(f'Client with id {id} does not exist')
 
 
     def get_by_id(self, id: int) -> Client:

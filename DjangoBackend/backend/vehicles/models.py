@@ -10,6 +10,9 @@ class Vehicle(models.Model):
     year = models.IntegerField(null=True, blank=True)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
 
+    class Meta:
+        db_table = 'vehicles'
+
 
     def __str__(self) -> str:
         return f'{self.brand} {self.model} - {self.plate_number}'
