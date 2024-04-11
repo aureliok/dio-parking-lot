@@ -20,7 +20,7 @@ function FinishFormFields(): JSX.Element {
         event.preventDefault();
     
         try {
-          const response = await fetch("https://localhost:7131/end-activity", {
+          const response = await fetch("/end-activity", {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",

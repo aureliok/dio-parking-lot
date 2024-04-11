@@ -26,7 +26,7 @@ function GetVehicleFormFields(): JSX.Element {
       const clientLasttName = clientLastNameElement.value;
 
       const response = 
-        await fetch(`https://localhost:7131/vehicles-client?firstName=${encodeURIComponent(clientFirstName)}&lastName=${(encodeURIComponent(clientLasttName))}`, {
+        await fetch(`/vehicles-client?firstName=${encodeURIComponent(clientFirstName)}&lastName=${(encodeURIComponent(clientLasttName))}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json"

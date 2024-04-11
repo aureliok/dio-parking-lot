@@ -19,6 +19,7 @@ builder.Services.AddDbContext<ParkingLotDbContext>(options =>
     });
 });
 
+
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
 builder.Services.AddScoped<IParkingLotRepository, ParkingLotRepository>();
@@ -36,6 +37,11 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddHttpsRedirection(options =>
+{
+    options.HttpsPort = 443; // Set the HTTPS port
+});
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -50,7 +56,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
