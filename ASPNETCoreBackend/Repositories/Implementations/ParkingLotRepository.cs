@@ -44,10 +44,6 @@ namespace ASPNETCoreBackend.Repositories.Implementations
 
         public void UpdateParkingLot(ParkingLot parkingLot)
         {
-            //ParkingLot checkParkingLot = _context.ParkingLots.FirstOrDefault(pl => pl.Equals(parkingLot));
-
-            //if (checkParkingLot != null)
-            //{
             _context.ParkingLots.Update(parkingLot);
             _context.SaveChanges();
             

@@ -21,7 +21,7 @@ function RemoveFormFields(): JSX.Element {
     event.preventDefault();
 
     try {
-      const response = await fetch("https://localhost:7131/delete-vehicle", {
+      const response = await fetch("/delete-vehicle", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json"

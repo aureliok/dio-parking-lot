@@ -40,3 +40,6 @@ staticfiles/
 media/
 *.env
 db.sqlite3
+
+*.pem
+*.crt

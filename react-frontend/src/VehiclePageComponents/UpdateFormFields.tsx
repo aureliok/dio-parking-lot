@@ -21,7 +21,7 @@ function UpdateFormFields(): JSX.Element {
         event.preventDefault();
     
         try {
-          const response = await fetch("https://localhost:7131/update-vehicle", {
+          const response = await fetch("/update-vehicle", {
             method: "PUT",
             headers: {
               "Content-Type": "application/json"

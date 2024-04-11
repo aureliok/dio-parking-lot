@@ -24,7 +24,7 @@ function GetActivitiesFormFields(): JSX.Element {
       const parkingLotName = parkingLotNameElement.value;
 
       const response = 
-        await fetch(`https://localhost:7131/activities-parking-lot?parkingLotName=${(encodeURIComponent(parkingLotName))}`, {
+        await fetch(`/activities-parking-lot?parkingLotName=${(encodeURIComponent(parkingLotName))}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json"

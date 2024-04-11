@@ -18,7 +18,7 @@ function AddFormFields(): JSX.Element {
       event.preventDefault();
   
       try {
-        const response = await fetch("https://localhost:7131/new-parking-lot", {
+        const response = await fetch("/new-parking-lot", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

@@ -18,7 +18,7 @@ function AddFormFields(): JSX.Element {
       event.preventDefault();
   
       try {
-        const response = await fetch("https://localhost:7131/new-client", {
+        const response = await fetch("/new-client", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

@@ -21,7 +21,7 @@ function GetVehicleFormFields(): JSX.Element {
       const parkingLotName = parkingLotNameElement.value;
 
       const response = 
-        await fetch(`https://localhost:7131/vehicles-parkinglot?parkingLotName=${encodeURIComponent(parkingLotName)}`, {
+        await fetch(`/vehicles-parkinglot?parkingLotName=${encodeURIComponent(parkingLotName)}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json"
