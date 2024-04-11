@@ -19,7 +19,7 @@ def new_activity(request):
 
 
 @csrf_exempt
-@require_POST
+@require_http_methods(['PUT'])
 def end_activity(request):
     data = json.loads(request.body.decode('utf-8'))
     model = ActivityModel(**data)

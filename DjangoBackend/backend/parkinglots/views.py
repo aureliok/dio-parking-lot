@@ -19,7 +19,7 @@ def new_parkinglot(request):
 
 
 @csrf_exempt
-@require_POST
+@require_http_methods(['DELETE'])
 def delete_parkinglot(request):
     data = json.loads(request.body.decode('utf-8'))
     model = ParkingLotModel(**data)

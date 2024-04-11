@@ -20,7 +20,7 @@ def new_vehicle(request):
 
 
 @csrf_exempt
-@require_POST
+@require_http_methods(['DELETE'])
 def delete_vehicle(request):
     data = json.loads(request.body.decode('utf-8'))
     model = VehicleModel(**data)

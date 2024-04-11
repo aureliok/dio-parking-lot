@@ -24,13 +24,13 @@ class Activity(models.Model):
 
 class ActivityModel:
     def __init__(self, **kwargs):
-        self.parkinglot_activity_id = kwargs.get('parkinglot_activity_id')
-        self.parkinglot_name = kwargs.get('parkinglot_name')
-        self.client_firstname = kwargs.get('client_firstname')
-        self.client_lastname = kwargs.get('client_lastname')
-        self.vehicle_platenumber = kwargs.get('vehicle_platenumber')
-        self.start_date = kwargs.get('start_date')
-        self.end_date = kwargs.get('end_date')
+        self.parkinglot_activity_id = kwargs.get('parkingLotActivity')
+        self.parkinglot_name = kwargs.get('parkingLotName')
+        self.client_firstname = kwargs.get('clientFirstName')
+        self.client_lastname = kwargs.get('clientLastName')
+        self.vehicle_platenumber = kwargs.get('vehiclePlateNumber')
+        self.start_date = kwargs.get('startDate')
+        self.end_date = kwargs.get('endDate')
 
     def to_dict(self):
         return {

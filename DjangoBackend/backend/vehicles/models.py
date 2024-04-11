@@ -21,13 +21,13 @@ class Vehicle(models.Model):
 
 class VehicleModel:
     def __init__(self, **kwargs):
-        self.plate_number = kwargs.get('plate_number')
+        self.plate_number = kwargs.get('plateNumber')
         self.brand = kwargs.get('brand')
         self.model = kwargs.get('model')
         self.color = kwargs.get('color')
         self.year = kwargs.get('year')
-        self.client_firstname = kwargs.get('client_firstname')
-        self.client_lastname = kwargs.get('client_lastname')
+        self.client_firstname = kwargs.get('clientFirstName')
+        self.client_lastname = kwargs.get('clientLastName')
 
     def to_dict(self):
         return {

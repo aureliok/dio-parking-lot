@@ -18,8 +18,8 @@ class Client(models.Model):
 
 class ClientModel():
     def __init__(self, **kwargs):
-        self.first_name = kwargs.get('first_name')
-        self.last_name = kwargs.get('last_name')
+        self.first_name = kwargs.get('firstName')
+        self.last_name = kwargs.get('lastName')
         self.phone_number = kwargs.get('phone')
         self.email = kwargs.get('email')
 

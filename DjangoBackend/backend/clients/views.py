@@ -20,7 +20,7 @@ def new_client(request):
 
 
 @csrf_exempt
-@require_POST
+@require_http_methods(['DELETE'])
 def delete_client(request):
     data = json.loads(request.body.decode('utf-8'))
     model = ClientModel(**data)

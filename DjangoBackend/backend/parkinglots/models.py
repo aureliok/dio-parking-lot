@@ -19,8 +19,8 @@ class ParkingLotModel:
     def __init__(self, **kwargs):
         self.name = kwargs.get('name')
         self.address = kwargs.get('address')
-        self.price_first_hour = kwargs.get('price_first_hour')
-        self.price_additional_hour = kwargs.get('price_additional_hour')
+        self.price_first_hour = kwargs.get('priceFirstHour')
+        self.price_additional_hour = kwargs.get('pricePerAdditionalHour')
 
     def to_dict(self):
         return {

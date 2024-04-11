@@ -31,14 +31,15 @@ class VehicleRepository:
                     setattr(vehicle, attr, value)
 
             if any('client' in attr for attr in data.__dict__.keys()):
-                client: Client = ClientRepository().get_by_fullname(
-                    data.client_firstname, data.client_lastname
-                    )
-                
-                if not client:
-                    raise Http404('client not found')
-                
-                vehicle.client = client
+                if data.__dict__['client_firstname'] != '' and data.__dict__['client_lastname'] != '':
+                    client: Client = ClientRepository().get_by_fullname(
+                        data.client_firstname, data.client_lastname
+                        )
+                    
+                    if not client:
+                        raise Http404('client not found')
+                    
+                    vehicle.client = client
 
             vehicle.save()
         except Vehicle.DoesNotExist:
