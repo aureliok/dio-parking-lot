@@ -63,7 +63,7 @@
 }
 
 .table-responsive {
-  max-height: 70%;
+  max-height: 70em;
   overflow-y: auto;
 }
 
