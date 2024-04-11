@@ -16,3 +16,6 @@ As of additional features that I've implemented:
     </ul>
 
 
+Also implemented the same backend logic using Python and Django, as seen on the folder DjangoBackend.
+
+
