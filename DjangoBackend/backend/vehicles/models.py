@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 
 class Vehicle(models.Model):
     vehicle_id = models.AutoField(primary_key=True)
-    plate_number = models.CharField(max_length=14)
+    plate_number = models.CharField(max_length=14, unique=True)
     brand = models.CharField(max_length=20)
     model = models.CharField(max_length=20)
     color = models.CharField(max_length=15)

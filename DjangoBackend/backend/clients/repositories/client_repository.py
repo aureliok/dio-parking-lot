@@ -1,10 +1,11 @@
-from models import Client, ClientModel
+from ..models import Client, ClientModel
+from vehicles.models import Vehicle
 from django.http import Http404
 from typing import List
 STATIC_ATTR: List[str] = ['client_id', 'first_name', 'last_name', 'registration_date']
 
 class ClientRepository:
-    def add(self, data: Client) -> None:
+    def add(self, data: dict) -> None:
         Client.objects.create(**data)
     
 
@@ -42,5 +43,13 @@ class ClientRepository:
             return client
         except Client.DoesNotExist:
             raise Http404(f'Client {firstname} {lastname} does not exist')
+        
+
+    def get_vehicles_of_client(self, client_id: int) -> List[Vehicle]:
+        try:
+            vehicles: List[Vehicle] = Vehicle.objects.filter(client_id=client_id)
+            return vehicles
+        except Vehicle.DoesNotExist:
+            raise Http404(f'Client with id {client_id} does not have any vehicles registered')
 
 

@@ -61,15 +61,15 @@ class ActivityViewModel:
 
     def to_dict(self):
         return {
-            'parkinglot_activity_id': self.parkinglot_activity_id,
-            'parkinglot_id': self.parkinglot_id,
-            'parkinglot_name': self.parkinglot_name,
-            'price_additional_hour': self.price_additional_hour,
-            'price_first_hour': self.price_first_hour,
-            'plate_number': self.plate_number,
-            'client_firstname': self.client_firstname,
-            'client_lastname': self.client_lastname,
-            'start_date': self.start_date,
-            'end_date': self.end_date,
-            'parking_value': self.parking_value
+            'parkingLotActivityId': self.parkinglot_activity_id,
+            'parkingLotId': self.parkinglot_id,
+            'parkingLotName': self.parkinglot_name,
+            'pricePerAdditionalHour': self.price_additional_hour,
+            'priceFirstHour': self.price_first_hour,
+            'plateNumber': self.plate_number,
+            'clientFirstName': self.client_firstname,
+            'clientLastName': self.client_lastname,
+            'startDate': self.start_date,
+            'endDate': self.end_date,
+            'parkingValue': self.parking_value
         }

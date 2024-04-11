@@ -1,7 +1,7 @@
-from models import Vehicle, VehicleModel
+from ..models import Vehicle, VehicleModel
 from clients.models import Client
 from clients.repositories.client_repository import ClientRepository
-from repositories.vehicle_repository import VehicleRepository
+from ..repositories.vehicle_repository import VehicleRepository
 from typing import List
 
 class VehicleService:
@@ -16,12 +16,14 @@ class VehicleService:
         if client is None:
             raise ValueError("client not found")
 
-        vehicle: Vehicle = Vehicle(plate_number=vehicle_model.plate_number,
-                                   brand=vehicle_model.brand,
-                                   model=vehicle_model.model,
-                                   color=vehicle_model.color,
-                                   year=vehicle_model.year,
-                                   client=client)
+        vehicle = {
+            "plate_number":vehicle_model.plate_number,
+            "brand":vehicle_model.brand,
+            "model":vehicle_model.model,
+            "color":vehicle_model.color,
+            "year":vehicle_model.year,
+            "client":client
+        }
         
         self.vehicle_repo.add(vehicle)
 

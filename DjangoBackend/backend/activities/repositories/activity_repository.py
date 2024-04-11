@@ -1,4 +1,4 @@
-from models import Activity
+from ..models import Activity
 from vehicles.models import Vehicle
 from parkinglots.models import ParkingLot
 from clients.models import Client
@@ -8,7 +8,11 @@ STATIC_ATTR: List[str] = ['activity_id', 'parking_lot', 'client', 'vehicle']
 
 class ActivityRepository:
     def add(self, data: Activity) -> None:
-        Activity.objects.create(**data)
+        Activity.objects.create(**{
+            "client":data.client,
+            "parking_lot":data.parking_lot,
+            "vehicle":data.vehicle
+        })
 
     def remove(self, activity_id: int) -> None:
         try:
