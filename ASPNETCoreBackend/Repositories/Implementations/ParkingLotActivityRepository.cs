@@ -92,12 +92,6 @@ namespace ASPNETCoreBackend.Repositories.Implementations
 
         public void UpdateParkingLotActivity(ParkingLotActivity activity)
         {
-            //ParkingLotActivity checkActivity = _context
-            //                                .ParkingLotActivities
-            //                                .FirstOrDefault(a => a.Equals(activity));
-
-            //if (checkActivity != null)
-            //{
             _context.ParkingLotActivities.Update(activity);
             _context.SaveChanges();
             
