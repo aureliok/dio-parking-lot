@@ -10,19 +10,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '8.0.2'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
 
-    - name: Restore dependencies
-      run: dotnet restore
+      - name: Restore dependencies
+        working-directory: ./ASPNETCoreBackend
+        run: dotnet restore
 
-    - name: Build
-      run: dotnet build --configuration Release
+      - name: Setup PostgreSQL
+        run: |
+          docker run --rm -d \
+          -v "$(pwd)/init_schema.sql:/docker-entrypoint-initdb.d/init_schema.sql" \
+          -e POSTGRES_USER=psql_user \
+          -e POSTGRES_PASSWORD=postgres \
+          -e POSTGRES_DB=parking_lot \
+          -p 5432:5432 \
+          postgres:latest
 
-    - name: Test
-      run: dotnet test --configuration Release --no-build
+      - name: Build
+        working-directory: ./ASPNETCoreBackend
+        run: dotnet build --configuration Release
+
+      - name: Test
+        working-directory: ./ASPNETCoreBackend
+        run: dotnet test --configuration Release --no-build
