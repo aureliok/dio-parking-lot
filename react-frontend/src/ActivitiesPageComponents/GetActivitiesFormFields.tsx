@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ActitivyFormData, ActivityView } from "./ActivityFormData";
+import { ActivityView } from "./ActivityFormData";
 
 
 function GetActivitiesFormFields(): JSX.Element {
