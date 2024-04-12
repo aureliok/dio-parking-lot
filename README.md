@@ -18,4 +18,6 @@ As of additional features that I've implemented:
 
 Also implemented the same backend logic using Python and Django, as seen on the folder DjangoBackend.
 
+Unit testing was implemented on the ASPNETCoreBackend.Tests using the xUnit package.
+
 
