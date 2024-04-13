@@ -59,7 +59,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthorization();
 
-app.UseCors("AllowLocalhost");
+//app.UseCors("AllowLocalhost");
 
 app.MapControllers();
 

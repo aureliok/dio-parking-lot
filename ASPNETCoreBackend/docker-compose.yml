@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  aspnet-be:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports: 
+      - '8000:80'
+    depends_on:
+      - migrations
+    environment: 
+      - ConnectionStrings__DefaultConnection=Server=db;Port=5432;Database=parking_lot;User Id=psql_user;Password=postgres;SearchPath=parking_lot_system;
+
+  migrations:
+    build:
+      context: .
+      dockerfile: Dockerfile.migrations
+    depends_on:
+      - db
+    environment: 
+      - ConnectionStrings__DefaultConnection=Server=db;Port=5432;Database=parking_lot;User Id=psql_user;Password=postgres;SearchPath=parking_lot_system;
+
+
+  db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=parking_lot
+      - POSTGRES_USER=psql_user
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_SCHEMA=parking_lot_system
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
